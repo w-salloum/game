@@ -183,7 +183,7 @@ public class GameServiceImp implements GameService {
 
 			return null;
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 			return null;
 		}
 	}
