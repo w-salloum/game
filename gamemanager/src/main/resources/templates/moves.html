@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Game</title>
+    <style>
+    th, td {
+                padding: 10px;
+                
+            }
+    </style>
+</head>
+<body>
+      
+
+
+ 
+ <th:block th:each="game : ${games}">
+<div>
+	 <table style= "border: 1px solid #111;"> 
+	 <tr><th colspan="4">Game ID : <span th:text="${game.gameId}"></span> </th></tr>
+    <tr><th colspan="4">Winner ID :<span th:text="${game.winnerId}"></span></th></tr>
+    <tr><th colspan="4">Moves  </th></tr>
+     <tr>
+         <th>Player ID</th>
+         
+         <th> Received Number</th>
+         
+         <th> Added Number</th>
+         <th> Sent Number</th>
+     </tr>
+   <th:block th:each="move : ${game.moves}">
+      <tr>
+         <td th:text="${move.playerId}"></td>
+           <td th:text="${move.numReceived}==-1?'First move':${move.numReceived}"></td>
+           <td th:text="${move.added}"></td>
+         <td th:text="${move.numSend}"></td>
+         
+         
+    
+         
+      </tr>
+      
+   </th:block>
+   </table>
+ </div>
+ 
+ </th:block>
+   
+   
+
+ 
+</body>
+</html>
