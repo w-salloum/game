@@ -95,8 +95,7 @@ public class GameServiceImp implements GameService {
 	public Player[] inviteTowPlayers(Game game) {
 
 		Player[] players = this.invitePlayers(2);
-		System.out.println(players);
-
+		
 		if (players != null && players[0] != null) {
 			game.setPlayer1(players[0]);
 			System.out.println(players[0].getId());
