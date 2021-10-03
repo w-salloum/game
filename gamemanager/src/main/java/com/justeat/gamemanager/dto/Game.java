@@ -10,6 +10,7 @@ public class Game {
 	private String gameId;	
 	private Player player1;
 	private Player player2;
+	private String starterId;
 
 	private GameStatus status;
 	private List<Move> moves;
@@ -54,19 +55,6 @@ public class Game {
 		return this.getMoves().get(this.getMoves().size()-1).getPlayerId();
 	}
 
-	
-
-	public String getStarterId() {
-		if (this.moves.isEmpty()) {
-			return "";
-		}
-		if(this.getStatus() != GameStatus.FINISHED) {
-			return "";
-		}
-		return this.getMoves().get(this.getMoves().size()-1).getPlayerId();
-	}
-
-
 	public GameStatus getStatus() {
 		return status;
 	}
@@ -83,15 +71,16 @@ public class Game {
 		move.setGameId(this.getGameId());
 		this.moves.add(move);
 	}
-	
-	/*
-	 public String getStarterId() {
-		if (this.getMoves().get(0)== null) {
-			return "";
-		}
-		return this.getMoves().get(0).getPlayerId();
+
+	public void setStarterId(String starterId) {
+		this.starterId = starterId;
 	}
-	 */
+	
+	public String getStarterId() {
+		return this.starterId;
+	}
+	
+
 
 
 }

@@ -37,6 +37,8 @@ public class GameServiceImp implements GameService {
 		System.out.println("Game started");
 
 		if (game.getStatus() == GameStatus.READY) {
+			
+			game.setStarterId(starterId);
 
 			Player currentPlayer;
 
@@ -65,6 +67,7 @@ public class GameServiceImp implements GameService {
 			System.out.println(move.toString());
 			game.addMove(move);
 			while (game.getStatus() != GameStatus.FINISHED) {
+				currentPlayer = game.getPlayer1().equals(currentPlayer) ? game.getPlayer2() : game.getPlayer1();
 				move = this.play(currentPlayer.getId(), move.getNumSend());
 				// if there is any issue while playing, we will terminate the game and exit
 				if (move == null) {
@@ -73,11 +76,9 @@ public class GameServiceImp implements GameService {
 				}
 				game.addMove(move);
 				if (move.getNumSend() == 1) {
-					// game.setWinnerId(move.getPlayerId());
+					// we finish the game and exit
 					this.finishGame(game);
-				} else {
-					currentPlayer = game.getPlayer1().equals(currentPlayer) ? game.getPlayer2() : game.getPlayer1();
-				}
+				} 
 
 			}
 
@@ -175,8 +176,9 @@ public class GameServiceImp implements GameService {
 		this.gameRepository.archive(game);
 		// let us create a new game for the game manager, then we can use it for other
 		// players
+		System.out.println("Game has been finished and a new game will be created");
 		this.gameManager.createGame();
-		System.out.println("Game has been finished and a new game has been created");
+		
 	}
 	
 	/*
@@ -188,8 +190,9 @@ public class GameServiceImp implements GameService {
 		this.gameRepository.archive(game);
 		// let us create a new game for the game manager, then we can use it for other
 		// players
+		System.out.println("Game has been terminated and a new game will be created");
 		this.gameManager.createGame();
-		System.out.println("Game has been terminated and a new game has been created");
+		
 	}
 
 	private Player[] invitePlayers(int numOfPlayers) {

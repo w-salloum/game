@@ -33,13 +33,12 @@ public class GameManager {
 		if(game == null || game.getStatus() == GameStatus.FINISHED) {
 			this.game = new Game();
 			NewGameEvent event = new NewGameEvent(game);
-			applicationEventPublisher.publishEvent(event);
 			System.out.println("A new game has been created");
+			applicationEventPublisher.publishEvent(event);			
 			return true;
 		}
 		
 		return false;
-		
 		
 	}
 	
