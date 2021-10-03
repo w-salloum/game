@@ -18,13 +18,15 @@ Java and Spring-boot
 - To create a manual player ( who will not be able to play automatically) http://localhost:8082/player/new?auto=false
 - To allow the manual player to play http://localhost:8082/player/play ( you will not be able to use it for the automatic player)
 - To check the moves http://localhost:8081/game/moves 
+- Note: If you run the game manager first, and then you run the player server, after that you create players, you do not need to go to http://localhost:8081/game/start to create an instance from the game manager, because the players will try to ask the game manager for invitation, and then an instance from the game manager will be created.
 
 # How it works
 - We use the player server to create automatic and manual players
 - When a player is created, an event will be created to ask the game manager for invitation
 - When the player server get an invitation for players to play, it will send players IDs who are waiting to play.
 - The players can play by APIs
-- We can use start API to start the game by a player ( to send a random number) 
+- We can use start API to start the game by a player ( to send a random number)
+- The first player will start the game, while he joins the game first
 - Player server has a waiting queue of the players who are created and have not started playing yet.
 - Game manager will create an instance of the game and will be waiting for players.
 - When we create an instance of the game manager, an event will be created to invite players to join the game from the player server.
