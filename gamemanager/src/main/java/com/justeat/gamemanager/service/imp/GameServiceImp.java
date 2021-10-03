@@ -71,7 +71,6 @@ public class GameServiceImp implements GameService {
 					this.terminateGame(game);
 					break;
 				}
-				System.out.println(move.toString());
 				game.addMove(move);
 				if (move.getNumSend() == 1) {
 					// game.setWinnerId(move.getPlayerId());
