@@ -49,21 +49,26 @@ public class GameServiceImp implements GameService {
 				// not match with any game player
 				return;
 			}
+			
 			game.setStatus(GameStatus.INPROGRESS);
-
-			String url = playerAPI + "start?playerId=" + currentPlayer.getId();
-			ResponseEntity<Move> response = restTemplate.getForEntity(url, Move.class);
-			// if (response.getStatusCode() == HttpStatus.OK) {
-
-			// }
+			ResponseEntity<Move> response;
+			try {
+				String url = playerAPI + "start?playerId=" + currentPlayer.getId();
+				response = restTemplate.getForEntity(url, Move.class);
+			}catch(Exception e) {
+				System.out.println(e.getMessage());
+				this.terminateGame(game);
+				return;
+			}
+			
 			Move move = response.getBody();
 			System.out.println(move.toString());
 			game.addMove(move);
 			while (game.getStatus() != GameStatus.FINISHED) {
 				move = this.play(currentPlayer.getId(), move.getNumSend());
-				// if there is any issue while playing, we will finish the game and exit
+				// if there is any issue while playing, we will terminate the game and exit
 				if (move == null) {
-					this.finishGame(game);
+					this.terminateGame(game);
 					break;
 				}
 				System.out.println(move.toString());
@@ -81,14 +86,20 @@ public class GameServiceImp implements GameService {
 	}
 
 	private Move play(String playerId, int num) {
-		String url = playerAPI + "play?playerId=" + playerId + "&num=" + num;
-		ResponseEntity<Move> response = restTemplate.getForEntity(url, Move.class);
-		if (response.getStatusCode() == HttpStatus.OK) {
-			Move move = response.getBody();
-			System.out.println(move.toString());
-			return move;
+		
+		try {
+			String url = playerAPI + "play?playerId=" + playerId + "&num=" + num;
+			ResponseEntity<Move> response = restTemplate.getForEntity(url, Move.class);
+			if (response.getStatusCode() == HttpStatus.OK) {
+				Move move = response.getBody();
+				System.out.println(move.toString());
+				return move;
+			}
+			return null;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return null;
 		}
-		return null;
 
 	}
 
@@ -167,6 +178,19 @@ public class GameServiceImp implements GameService {
 		// players
 		this.gameManager.createGame();
 		System.out.println("Game has been finished and a new game has been created");
+	}
+	
+	/*
+	 * It will change the atatus to FINISHED, archive the game, and create a new
+	 * game for new players
+	 */
+	private void terminateGame(Game game) {
+		game.setStatus(GameStatus.TERMINATED);
+		this.gameRepository.archive(game);
+		// let us create a new game for the game manager, then we can use it for other
+		// players
+		this.gameManager.createGame();
+		System.out.println("Game has been terminated and a new game has been created");
 	}
 
 	private Player[] invitePlayers(int numOfPlayers) {

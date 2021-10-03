@@ -49,7 +49,7 @@ public class Move {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return playerId+":"+numReceived+"/"+numSend+"/"+added;
+		return "Move : "+playerId+" / "+numReceived+" / "+numSend+" / "+added;
 	}
 
 	public String getGameId() {
